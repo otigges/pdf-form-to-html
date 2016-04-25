@@ -1,0 +1,73 @@
+<!DOCKTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="editor.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    <form action="../app/forms/f1.pdf/process" method="post">
+      <div class="button-bar">
+        <h4>Sample PDF Form</h4> <button class="btn btn-success">Print</button>
+      </div>
+      <div class="editor-main">
+          <img class="form-background" src="../app/forms/f1.pdf/image/0" width="1000"/>
+      </div>
+    </form>
+
+  </div>
+
+  <script>
+
+    function populateForm(data) {
+      data.filter(function(e) {return e.page === 0; }).forEach(function(f) {
+        var editor = $(".editor-main");
+        var bgform = $(".form-background");
+
+        var offset_x = bgform.offset().left;
+        var offset_y = bgform.offset().top;
+        var qw = bgform.width();
+        var qh = bgform.height();
+
+        var ff = $(".form-field[name=" + f.name + "]");
+        if (ff.size() === 0) {
+          if (f.type === "Btn") {
+            ff = $('<input type="checkbox" class="form-field"/>');
+          } else {
+            ff = $('<input type="text" class="form-field"/>');
+          }
+          editor.append(ff);
+        }
+
+        ff.attr('name', f.name);
+        ff.css('width', f.width * qw);
+        ff.css('height', f.height * qh);
+        ff.css('left', offset_x + f.left * qw);
+        ff.css('top', offset_y + f.top * qh);
+
+      })
+    }
+
+    $.getJSON("../app/forms/f1.pdf/field-info", function(data) {
+      var bgform = $(".form-background");
+      bgform.load(function() {
+        populateForm(data);
+      }).each(function() {
+        if(this.complete) $(this).load();
+      });
+      $( window ).resize(function() {
+        populateForm(data);
+      });
+    }).fail(function(jqxhr, textStatus, error ) {
+      var err = textStatus + ", " + error;
+      console.log( "Request Failed: " + err );
+    });
+
+  </script>
+</body>
+</html>
