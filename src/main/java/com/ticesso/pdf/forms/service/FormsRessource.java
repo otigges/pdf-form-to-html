@@ -1,6 +1,6 @@
 package com.ticesso.pdf.forms.service;
 
-import com.innoq.stuff.PdfFormAnalyzer;
+import com.ticesso.pdf.forms.PdfFormAnalyzer;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

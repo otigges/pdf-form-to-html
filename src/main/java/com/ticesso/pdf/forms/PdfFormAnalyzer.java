@@ -1,6 +1,5 @@
 package com.ticesso.pdf.forms;
 
-import com.innoq.stuff.FormField;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
