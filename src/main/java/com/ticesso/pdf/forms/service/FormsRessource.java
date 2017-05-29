@@ -43,6 +43,7 @@ public class FormsRessource {
             MultivaluedMap<String, String> formParams) {
         return withPdf(pdfId, (pdf) -> {
             final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            pdf.setLogo();
             pdf.fillPdf(flatten(formParams), out);
             return Response.ok(out.toByteArray()).build();
         });

@@ -3,6 +3,8 @@ package com.ticesso.pdf.forms;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDCheckBox;
@@ -63,6 +65,20 @@ public class PdfFormAnalyzer implements Closeable {
         }
         form.flatten();
         document.save(out);
+    }
+
+    public void setLogo() throws IOException {
+        final int width = 80, height = 50;
+        PDImageXObject img = PDImageXObject.createFromFile("./content/logo_1.png", document);
+        final PDPage page = document.getPage(0);
+        float imageRatio = img.getWidth() / img.getHeight();
+        float boxRatio = width / height;
+        float adaptRatio = boxRatio / imageRatio;
+        float adaptedWidth = adaptRatio > 1 ? width / adaptRatio : width;
+        float adaptedHeight = adaptRatio < 1 ? height * adaptRatio : height;
+        PDPageContentStream contentStream = new PDPageContentStream(document, page, true, true);
+        contentStream.drawImage(img, 465, 740, adaptedWidth, adaptedHeight);
+        contentStream.close();
     }
 
     private FormField toFormField(PDField pdField) {
