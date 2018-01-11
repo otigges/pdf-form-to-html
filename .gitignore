@@ -16,3 +16,4 @@ buildNumber.properties
 # OTHER
 *.docx
 *.graffle
+.DS_Store
